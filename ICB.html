@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Integrated Care Boards Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 600px;
+        }
+        h1 {
+            font-family: Calibri, sans-serif;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .modal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .modal-table th, .modal-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .modal-table th {
+            background-color: #f4f4f4;
+        }
+        .close {
+            cursor: pointer;
+            float: right;
+            font-size: 20px;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Integrated Care Systems in England</h1>
+    <div id="map"></div>
+
+    <!-- Modal for Table -->
+    <div id="modal" class="modal">
+        <span class="close" onclick="closeModal()">×</span>
+        <div id="modal-header" class="modal-header"></div>
+        <table id="modal-table" class="modal-table"></table>
+    </div>
+
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([53.8, -1.5], 6);
+
+        // Add base map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // JSON data for NHS organisations
+        const nhsData = [
+            {
+                "name": "Airedale NHS Foundation Trust",
+                "region": "WY",
+                "resourcesProvided": [
+                    "Organisation",
+                    "Patient",
+                    "Practitioner",
+                    "Practitioner Role",
+                    "Appointments"
+                ]
+            },
+            {
+                "name": "Barnsley Hospital NHS Foundation Trust",
+                "region": "SY",
+                "resourcesProvided": [
+                    "Allergies/Intolerance",
+                    "Care Plans",
+                    "Condition",
+                    "Diagnostic Report",
+                    "Medication Request"
+                ]
+            },
+            {
+                "name": "Bradford Teaching Hospitals NHS Foundation Trust",
+                "region": "WY",
+                "resourcesProvided": [
+                    "Appointments",
+                    "Discharge Summaries",
+                    "Encounters",
+                    "Location",
+                    "Episodes of Care"
+                ]
+            }
+        ];
+
+        // Map from ICB name to region code
+        const regionMapping = {
+            "NHS West Yorkshire Integrated Care Board": "WY",
+            "NHS South Yorkshire Integrated Care Board": "SY",
+            "NHS Humber and North Yorkshire Integrated Care Board": "HNY"
+        };
+
+        // Function to display modal with table
+        function showModal(regionCode, regionName) {
+            const modal = document.getElementById("modal");
+            const modalHeader = document.getElementById("modal-header");
+            const modalTable = document.getElementById("modal-table");
+
+            // Set header
+            modalHeader.textContent = `Data for ${regionName}`;
+
+            // Build table
+            modalTable.innerHTML = `
+                <tr>
+                    <th>Provider</th>
+                    <th>Resources Available</th>
+                </tr>
+            `;
+
+            nhsData
+                .filter(org => org.region === regionCode)
+                .forEach(org => {
+                    modalTable.innerHTML += `
+                        <tr>
+                            <td>${org.name}</td>
+                            <td>${org.resourcesProvided.join(", ")}</td>
+                        </tr>
+                    `;
+                });
+
+            // Show modal
+            modal.style.display = "block";
+        }
+
+        // Function to close modal
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        // Fetch GeoJSON data from ArcGIS REST Service
+        const geojsonUrl = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson";
+
+        fetch(geojsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Add GeoJSON data directly to the map
+                L.geoJSON(data, {
+                    style: { color: "blue", weight: 2 },
+                    onEachFeature: (feature, layer) => {
+                        const icbName = feature.properties.ICB23NM;
+                        const regionCode = regionMapping[icbName]; // Map ICB name to region code
+                        const regionName = icbName;
+
+                        // Bind popup with a button to trigger the modal
+                        if (regionCode) {
+                            layer.bindPopup(`
+                                <strong>${regionName}</strong><br>
+                                <button onclick="showModal('${regionCode}', '${regionName}')">View data available by provider</button>
+                            `);
+                        }
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error("Error loading GeoJSON:", error));
+    </script>
+</body>
+</html>
