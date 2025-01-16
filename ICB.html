@@ -183,13 +183,25 @@
                         const regionCode = regionMapping[icbName]; // Map ICB name to region code
                         const regionName = icbName;
 
-                        // Bind popup with a button to trigger the modal
-                        if (regionCode) {
-                            layer.bindPopup(`
-                                <strong>${regionName}</strong><br>
-                                <button onclick="showModal('${regionCode}', '${regionName}')">View data available by provider</button>
-                            `);
-                        }
+                        // Add hover tooltip for all regions
+                        layer.bindTooltip(regionName, { permanent: false, direction: "top" });
+
+                        // Change color to green on hover
+                        layer.on("mouseover", () => {
+                            layer.setStyle({ color: "green" });
+                        });
+
+                        // Reset to original color on mouseout
+                        layer.on("mouseout", () => {
+                            layer.setStyle({ color: "blue" });
+                        });
+
+                        // Open modal only for regions in NHS data
+                        layer.on("click", () => {
+                            if (regionCode) {
+                                showModal(regionCode, regionName);
+                            }
+                        });
                     }
                 }).addTo(map);
             })
