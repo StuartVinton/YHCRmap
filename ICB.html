@@ -15,15 +15,14 @@
             display: none;
             position: fixed;
             z-index: 1000;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            right: 0;
+            top: 20%;
             background-color: white;
             border: 1px solid #ccc;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            max-width: 90%;
-            max-height: 80%;
+            width: 550px;
+            max-height: 70%;
             overflow-y: auto;
         }
         .modal-header {
@@ -75,14 +74,19 @@
         // JSON data for NHS organisations
         const nhsData = [
             {
-                "name": "Airedale NHS Foundation Trust",
-                "region": "WY",
+                "name": "Humber Teaching NHS Foundation Trust",
+                "region": "HNY",
                 "resourcesProvided": [
                     "Organisation",
                     "Patient",
                     "Practitioner",
                     "Practitioner Role",
-                    "Appointments"
+                    "Appointments",
+                    "Care Plans",
+                    "Condition",
+                    "Diagnostic Report",
+                    "Medication Request",
+                    "Transfer of Care"
                 ]
             },
             {
@@ -106,30 +110,18 @@
                     "Location",
                     "Episodes of Care"
                 ]
-            },
-            {
-                "name": "Humber Teaching NHS Foundation Trust",
-                "region": "HNY",
-                "resourcesProvided": [
-                    "Organisation",
-                    "Patient",
-                    "Practitioner",
-                    "Practitioner Role",
-                    "Appointments",
-                    "Care Plans",
-                    "Condition",
-                    "Diagnostic Report",
-                    "Medication Request",
-                    "Transfer of Care"
-                ]
             }
         ];
 
         // Map from ICB name to region code
         const regionMapping = {
-            "NHS West Yorkshire Integrated Care Board": "WY",
+            "NHS Humber and North Yorkshire Integrated Care Board": "HNY",
             "NHS South Yorkshire Integrated Care Board": "SY",
-            "NHS Humber and North Yorkshire Integrated Care Board": "HNY"
+            "NHS West Yorkshire Integrated Care Board": "WY",
+            "NHS Lincolnshire Integrated Care Board": "LIN",
+            "NHS Derby and Derbyshire Integrated Care Board": "DER",
+            "NHS Leicester, Leicestershire and Rutland Integrated Care Board": "LLR",
+			"NHS Nottingham and Nottinghamshire Integrated Care Board": "NCR"
         };
 
         // Function to display modal with table
@@ -175,12 +167,12 @@
         fetch(geojsonUrl)
             .then(response => response.json())
             .then(data => {
-                // Add GeoJSON data directly to the map
                 L.geoJSON(data, {
+                    filter: feature => Object.keys(regionMapping).includes(feature.properties.ICB23NM),
                     style: { color: "blue", weight: 2 },
                     onEachFeature: (feature, layer) => {
                         const icbName = feature.properties.ICB23NM;
-                        const regionCode = regionMapping[icbName]; // Map ICB name to region code
+                        const regionCode = regionMapping[icbName]; 
                         const regionName = icbName;
 
                         // Add hover tooltip for all regions
