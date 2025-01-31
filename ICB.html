@@ -406,9 +406,26 @@ function addProviderMarker(providerName) {
 
 
         // Function to close modal
-        function closeModal() {
-            document.getElementById("modal").style.display = "none";
-        }
+function closeModal() {
+    const modal = document.getElementById("modal");
+    modal.style.display = "none"; // Hide the modal
+
+    // Reset the map view
+    map.setView([53.5, -0.6], 8);
+
+    // Reset the last selected ICB to blue
+    if (lastSelectedICB) {
+        lastSelectedICB.setStyle({ color: "blue" });
+        lastSelectedICB = null;
+    }
+
+    // Remove any existing markers from the map
+    if (currentMarker) {
+        map.removeLayer(currentMarker);
+        currentMarker = null;
+    }
+}
+
 
         // Fetch GeoJSON data from ArcGIS REST Service
         const geojsonUrl = "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson";
