@@ -20,9 +20,9 @@
             background-color: white;
             border: 1px solid #ccc;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             width: 550px;
-            max-height: 70%;
+            max-height: 100%;
             overflow-y: auto;
         }
         .modal-header {
@@ -64,7 +64,7 @@
 
     <script>
         // Initialize map
-        const map = L.map('map').setView([53.5, -1.5], 8);
+        const map = L.map('map').setView([53.5, -0.6], 8);
 
         // Add base map layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -73,45 +73,218 @@
 
         // JSON data for NHS organisations
         const nhsData = [
-            {
-                "name": "Humber Teaching NHS Foundation Trust",
-                "region": "HNY",
-                "resourcesProvided": [
-                    "Organisation",
-                    "Patient",
-                    "Practitioner",
-                    "Practitioner Role",
-                    "Appointments",
-                    "Care Plans",
-                    "Condition",
-                    "Diagnostic Report",
-                    "Medication Request",
-                    "Transfer of Care"
-                ]
-            },
-            {
-                "name": "Barnsley Hospital NHS Foundation Trust",
-                "region": "SY",
-                "resourcesProvided": [
-                    "Allergies/Intolerance",
-                    "Care Plans",
-                    "Condition",
-                    "Diagnostic Report",
-                    "Medication Request"
-                ]
-            },
-            {
-                "name": "Bradford Teaching Hospitals NHS Foundation Trust",
-                "region": "WY",
-                "resourcesProvided": [
-                    "Appointments",
-                    "Discharge Summaries",
-                    "Encounters",
-                    "Location",
-                    "Episodes of Care"
-                ]
-            }
-        ];
+    {
+        "name": "Airedale NHS Foundation Trust",
+        "region": "WY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference"
+        ]
+    },
+    {
+        "name": "Barnsley Hospital NHS Foundation Trust",
+        "region": "SY",
+        "resourcesProvided": [
+            "Encounter",
+            "Patient",
+            "Appointment",
+            "Organization",
+            "Practitioner",
+            "Location"
+        ]
+    },
+    {
+        "name": "Bradford Teaching Hospitals Foundation Trust",
+        "region": "WY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference",
+            "Encounter",
+            "DiagnosticReport"
+        ]
+    },
+    {
+        "name": "Calderdale and Huddersfield NHS Foundation Trust",
+        "region": "WY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference",
+            "Encounter",
+            "Location"
+        ]
+    },
+    {
+        "name": "Doncaster & Bassetlaw Teaching Hospitals Foundation Trust",
+        "region": "SY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "Organization",
+            "DocumentReference",
+            "Encounter",
+            "AllergyIntolerance",
+            "Appointment",
+            "Flag",
+            "MedicationRequest",
+            "Procedure",
+            "Condition",
+            "ReferralRequest"
+        ]
+    },
+    {
+        "name": "Harrogate and District NHS Foundation Trust",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "Organization",
+            "Encounter",
+            "Appointment",
+            "Location"
+        ]
+    },
+    {
+        "name": "Hull University Teaching Hospitals NHS Trust",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "Encounter",
+            "EpisodeOfCare",
+            "Appointment",
+            "Location"
+        ]
+    },
+    {
+        "name": "Humber Teaching NHS Foundation Trust",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference",
+            "Encounter",
+            "Observation",
+            "AllergyIntolerance",
+            "Procedure",
+            "Condition"
+        ]
+    },
+    {
+        "name": "Leeds Teaching Hospital Trust",
+        "region": "WY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference"
+        ]
+    },
+    {
+        "name": "Mid Yorkshire Hospitals NHS Trust",
+        "region": "WY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference",
+            "Encounter",
+            "Appointment"
+        ]
+    },
+    {
+        "name": "North Lincolnshire Council",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient"
+        ]
+    },
+    {
+        "name": "North Lincolnshire and Goole NHS Foundation Trust",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "DocumentReference",
+            "Encounter"
+        ]
+    },
+    {
+        "name": "North Yorkshire Council",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "EpisodeOfCare",
+            "RelatedPerson",
+            "Task",
+            "ReferralRequest"
+        ]
+    },
+    {
+        "name": "Sheffield Children's NHS Foundation Trust",
+        "region": "SY",
+        "resourcesProvided": [
+            "Organization",
+            "Location",
+            "Patient",
+            "Appointment",
+            "Encounter",
+            "DocumentReference",
+            "Flag",
+            "AllergyIntolerance",
+            "ReferralRequest",
+            "Practitioner"
+        ]
+    },
+    {
+        "name": "Sheffield Teaching Hospitals NHS Foundation Trust",
+        "region": "SY",
+        "resourcesProvided": [
+            "Appointment",
+            "Encounter",
+            "Organization",
+            "Patient",
+            "Location"
+        ]
+    },
+    {
+        "name": "The Rotherham NHS Foundation Trust",
+        "region": "SY",
+        "resourcesProvided": [
+            "Encounter",
+            "Organization",
+            "Practitioner",
+            "Patient",
+            "Location",
+            "AllergyIntolerance",
+            "DocumentReference",
+            "Binary"
+        ]
+    },
+    {
+        "name": "York and Scarborough Teaching Hospital NHS Foundation Trust",
+        "region": "HNY",
+        "resourcesProvided": [
+            "Patient",
+            "Organization",
+            "DocumentReference"
+        ]
+    }
+];
 
         // Map from ICB name to region code
         const regionMapping = {
@@ -131,7 +304,7 @@
             const modalTable = document.getElementById("modal-table");
 
             // Set header
-            modalHeader.textContent = `Data for ${regionName}`;
+            modalHeader.textContent = `${regionName}`;
 
             // Build table
             modalTable.innerHTML = `
@@ -193,6 +366,7 @@
                             if (regionCode) {
                                 showModal(regionCode, regionName);
                             }
+							e.target.setStyle({ weight: 2 });
                         });
                     }
                 }).addTo(map);
