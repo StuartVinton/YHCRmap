@@ -8,9 +8,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
 
     <style>
-        #map {
-            height: 600px;
-        }
+       #map {
+    height: 600px;
+    border: 4px solid #888; /* Dark grey border for a framed look */
+    border-radius: 10px; /* Slightly rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow effect */
+}
+
         h1 {
             font-family: Calibri, sans-serif;
         }
@@ -18,11 +22,12 @@
             display: none;
             position: fixed;
             z-index: 1000;
-            right: 1%;
+            right: 1.5%;
             top: 15%;
             background-color: white;
             border: 1px solid #ccc;
             padding: 20px;
+			border-radius: 10px; /* Slightly rounded corners */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             width: 550px;
             max-height: 100%;
@@ -43,9 +48,37 @@
             padding: 8px;
             text-align: left;
         }
-        .modal-table th {
-            background-color: #f4f4f4;
-        }
+ .modal-table th {
+    background-color: #2c3e50; /* Dark blue-grey header */
+    color: white;
+    text-align: left;
+    font-weight: bold;
+}
+.modal-table td {
+    background-color: #f8f9fa;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.modal-table td a {
+    display: inline-block; 
+    text-decoration: none;
+    background-color: #3498db; 
+    color: white;
+    padding: 5px 8px; 
+    font-size: 12px; 
+    text-align: center;
+    border-radius: 4px;
+    transition: background 0.3s ease-in-out;
+    font-weight: bold;
+    width: 180px;
+    text-align: center;
+}
+
+
+.modal-table td a:hover {
+    background-color: #217dbb;
+}
         .close {
             cursor: pointer;
             float: right;
@@ -55,7 +88,7 @@
 		
 				   .toggle-button {
         position: absolute;
-        top: 10px;
+        top: 32px;
         right: 10px;
         background-color: white;
         border: 1px solid #ccc;
@@ -96,7 +129,7 @@ const cartoDBLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z
 });
 
 // Add the default tile layer (OpenStreetMap)
-let currentLayer = openStreetMap.addTo(map);
+let currentLayer = cartoDBLight.addTo(map);
 
 // Toggle Button Event Listener
 document.getElementById("toggleMapStyle").addEventListener("click", () => {
@@ -376,7 +409,7 @@ function showModal(regionCode, regionName) {
 let currentMarker = null;
 
 const markers = [
-    { id: "RCB", coords: [54.000, -1.000], name: "York and Scarborough Teaching Hospital NHS Foundation Trust", color: "darkblue" },
+    { id: "RCB", coords: [53.970294,-1.0847009], name: "York and Scarborough Teaching Hospital NHS Foundation Trust", color: "darkblue" },
     { id: "RX9", coords: [53.000, -0.500], name: "East Midlands Ambulance Service", color: "darkblue" },
     { id: "RCU", coords: [53.400, -1.500], name: "Sheffield Children's NHS Foundation Trust", color: "darkblue" },
     { id: "RFF", coords: [53.550, -1.500], name: "Barnsley Hospital NHS Foundation Trust", color: "darkblue" },
