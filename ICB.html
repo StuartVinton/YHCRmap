@@ -15,24 +15,28 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow effect */
 }
 
+
         h1 {
             font-family: Calibri, sans-serif;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            right: 1.5%;
-            top: 15%;
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 20px;
-			border-radius: 10px; /* Slightly rounded corners */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            width: 550px;
-            max-height: 100%;
-            overflow-y: auto;
-        }
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    right: 1.5%;
+    top: 15%;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px; /* Slightly rounded corners */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 30%;  /* Use a percentage of the screen width */
+    max-width: 550px;  /* Prevent it from getting too wide */
+    min-width: 300px;  /* Prevent it from getting too small */
+    max-height: 100%;
+    overflow-y: auto;
+}
+
         .modal-header {
             font-size: 20px;
             margin-bottom: 10px;
@@ -57,7 +61,7 @@
 .modal-table td {
     background-color: #f8f9fa;
     padding: 10px;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .modal-table td a {
@@ -357,15 +361,118 @@ document.getElementById("toggleMapStyle").addEventListener("click", () => {
             "Organization",
             "DocumentReference"
         ]
+    },
+	 {
+        "name": "Nottinghamshire County Council",
+        "region": "NCR",
+        "resourcesProvided": [
+            "Patient",
+            "Organization",
+            "EpisodeOfCare",
+			"ReferralRequest",
+			"Flag",
+			"Task"
+        ]
+    },
+	    {
+        "name": "Leicestershire County Council",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "EpisodeOfCare"
+        ]
+    },
+    {
+        "name": "Leicester City Council",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "EpisodeOfCare"
+        ]
+    },
+    {
+        "name": "Rutland County Councils",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "EpisodeOfCare"
+        ]
+    },
+    {
+        "name": "Leicestershire Partnership NHS Trust",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "DocumentReference",
+            "MedicationStatement",
+            "MedicationRequest",
+            "Binary",
+            "AllergyIntolerance"
+        ]
+    },
+    {
+        "name": "LPT Virtual Wards",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Bundle",
+            "Encounter",
+            "EpisodeOfCare",
+            "Observation",
+            "Patient",
+            "QuestionnaireResponse",
+            "Organization"
+        ]
+    },
+    {
+        "name": "University Hospitals Leicester",
+        "region": "LLR",
+        "resourcesProvided": [
+            "Patient",
+            "Practitioner",
+            "PractitionerRole",
+            "Organization",
+            "Encounter",
+            "Appointment",
+            "DocumentReference",
+            "Binary",
+            "Location"
+        ]
+    },
+	
+	 {
+        "name": "University Hospitals of Derby and Burton NHS Foundation Trust",
+        "region": "DER",
+        "resourcesProvided": [
+            "Patient",
+            "DocumentReference"
+        ]
+    },
+	 {
+        "name": "Chesterfield Royal Hospital NHS Foundation Trust",
+        "region": "DER",
+        "resourcesProvided": [
+            "Patient",
+            "DocumentReference"
+        ]
     }
+	
+	
+	
 ];
+
+
 
         // Map from ICB name to region code
         const regionMapping = {
             "NHS Humber and North Yorkshire Integrated Care Board": "HNY",
             "NHS South Yorkshire Integrated Care Board": "SY",
             "NHS West Yorkshire Integrated Care Board": "WY",
-            "NHS Lincolnshire Integrated Care Board": "LIN",
             "NHS Derby and Derbyshire Integrated Care Board": "DER",
             "NHS Leicester, Leicestershire and Rutland Integrated Care Board": "LLR",
 			"NHS Nottingham and Nottinghamshire Integrated Care Board": "NCR"
@@ -409,29 +516,17 @@ function showModal(regionCode, regionName) {
 let currentMarker = null;
 
 const markers = [
-    { id: "RCB", coords: [53.970294,-1.0847009], name: "York and Scarborough Teaching Hospital NHS Foundation Trust", color: "darkblue" },
-    { id: "RX9", coords: [53.000, -0.500], name: "East Midlands Ambulance Service", color: "darkblue" },
-    { id: "RCU", coords: [53.400, -1.500], name: "Sheffield Children's NHS Foundation Trust", color: "darkblue" },
-    { id: "RFF", coords: [53.550, -1.500], name: "Barnsley Hospital NHS Foundation Trust", color: "darkblue" },
-    { id: "RWY", coords: [53.650, -1.800], name: "Calderdale and Huddersfield NHS Foundation Trust", color: "darkblue" },
-    { id: "RHQ", coords: [53.380, -1.470], name: "Sheffield Teaching Hospitals NHS Foundation Trust", color: "darkblue" },
-    { id: "217", coords: [53.550, -0.650], name: "North Lincolnshire Council", color: "darkblue" },
-    { id: "215", coords: [53.750, -0.350], name: "Hull City Council", color: "darkblue" },
-    { id: "RX3", coords: [54.500, -1.200], name: "Tees, Esk and Wear Valleys NHS Foundation Trust", color: "darkblue" },
-    { id: "RR8", coords: [53.800, -1.560], name: "Leeds Teaching Hospital Trust", color: "darkblue" },
-    { id: "RV9", coords: [53.7712215,-0.4466298], name: "Humber Teaching NHS Foundation Trust", color: "darkblue" },
-    { id: "RCF", coords: [53.900, -1.750], name: "Airedale NHS Foundation Trust", color: "darkblue" },
-    { id: "RAE01", coords: [53.800, -1.790], name: "Bradford Teaching Hospitals Foundation Trust", color: "darkblue" },
-    { id: "RP5", coords: [53.520, -1.130], name: "Doncaster & Bassetlaw Teaching Hospitals Foundation Trust", color: "darkblue" },
-    { id: "RFX8TOC", coords: [53.500, -1.400], name: "Yorkshire Ambulance Service", color: "darkblue" },
-    { id: "RFR", coords: [53.380, -1.410], name: "The Rotherham NHS Foundation Trust", color: "darkblue" },
-    { id: "RXF", coords: [53.690, -1.690], name: "Mid Yorkshire Teaching NHS Trust", color: "darkblue" },
-    { id: "RJL1", coords: [53.587034,-0.667200], name: "North Lincolnshire and Goole NHS Foundation Trust", color: "darkblue" },
-    { id: "RWA", coords: [53.744191,-0.3588982], name: "Hull University Teaching Hospitals NHS Trust", color: "darkblue" },
     { id: "RCD", coords: [53.9937493,-1.517829], name: "Harrogate and District NHS Foundation Trust", color: "darkblue" },
-	{ id: "T999", coords: [54.281,-1.624], name: "North Yorkshire Council", color: "darkblue" }
-	
-	
+    { id: "RV9", coords: [53.7712215,-0.4466298], name: "Humber Teaching NHS Foundation Trust", color: "darkblue" },
+    { id: "RCB", coords: [53.970294,-1.0847009], name: "York and Scarborough Teaching Hospital NHS Foundation Trust", color: "darkblue" },
+	{ id: "215", coords: [53.750, -0.350], name: "Hull City Council", color: "darkblue" },
+	{ id: "217", coords: [53.550, -0.650], name: "North Lincolnshire Council", color: "darkblue" },
+	{ id: "T999", coords: [54.281,-1.624], name: "North Yorkshire Council", color: "darkblue" },
+	{ id: "RFX8TOC", coords: [53.500, -1.400], name: "Yorkshire Ambulance Service", color: "darkblue" },
+	{ id: "RWA", coords: [53.744191,-0.3588982], name: "Hull University Teaching Hospitals NHS Trust", color: "darkblue" },
+	{ id: "RJL1", coords: [53.587034,-0.667200], name: "North Lincolnshire and Goole NHS Foundation Trust", color: "darkblue" },
+	{ id: "511", coords: [52.9978026,-1.1411653], name: "Nottinghamshire County Council", color: "darkblue" },
+
 ];
 
 
@@ -440,10 +535,10 @@ function addProviderMarker(providerName) {
     // Find the provider in the markers list
     const provider = markers.find(marker => marker.name === providerName);
 
-    if (!provider) {
-        alert("Provider location not found!");
-        return;
-    }
+    //if (!provider) {
+    //    alert("Provider location not found!");
+    //    return;
+    //}
 
     // Remove existing marker if any
     if (currentMarker) {
